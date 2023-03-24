@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public float accelleration = 8f;
     public float dragFactor = 0.2f;
     public float jumpSpeed = 2f;
+    public float airControl = 0.3f;
 
     public bool isGrounded = false;
 
@@ -45,9 +46,18 @@ public class PlayerController : MonoBehaviour
         else if (rb.velocity.x > maxSpeed)
             rb.velocity = new Vector2(maxSpeed, rb.velocity.y);
 
+        //slow if no h input
+        if(Mathf.Abs(inputH) < 0.1f)
+        {
+            rb.velocity = new Vector2(rb.velocity.x * (1 - dragFactor), rb.velocity.y);
+        }
+
         //move
-        if(Mathf.Abs(rb.velocity.x + (inputH * accelleration*0.01f)) < maxSpeed)
-            rb.AddForce(new Vector2(inputH * accelleration, 0));
+        if (Mathf.Abs(rb.velocity.x + (inputH * accelleration * 0.01f)) < maxSpeed)
+            if (isGrounded)
+                rb.AddForce(new Vector2(inputH * accelleration, 0));
+            else
+                rb.AddForce(new Vector2(inputH * accelleration * airControl, 0));
 
         //facing direction
         if (inputH < -0.1f)
@@ -62,6 +72,14 @@ public class PlayerController : MonoBehaviour
         }
     
 
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if(col.transform.tag == "LevelEnd")
+        {
+            Debug.Log("Level End");
+        }
     }
 
 }
