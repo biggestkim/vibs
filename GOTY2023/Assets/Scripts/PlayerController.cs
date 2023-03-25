@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    GameController gc;
+
     Rigidbody2D rb;
     SpriteRenderer sr;
     public GameObject footObject;
@@ -22,8 +24,36 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //singleton pattern
+        //ensures there's only ever 1 player object
+        foreach(GameObject g in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if(g != this.gameObject)
+            {
+                Destroy(gameObject);
+                return;
+            }
+        }
+        //keep this between scenes
+        DontDestroyOnLoad(gameObject);
+
+        //get references to some other components
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
+        gc = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<GameController>();
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if(col.gameObject.tag == "HurtBox")
+        {
+            Death();
+        }
+    }
+
+    void Death()
+    {
+        gc.ResetLevel();
     }
 
     // Update is called once per frame
@@ -73,13 +103,4 @@ public class PlayerController : MonoBehaviour
     
 
     }
-
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        if(col.transform.tag == "LevelEnd")
-        {
-            Debug.Log("Level End");
-        }
-    }
-
 }

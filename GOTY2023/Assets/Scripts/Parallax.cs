@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Moves the background object proportionally to the camera to give the illusion of depth
+
 public class Parallax : MonoBehaviour
 {
 
@@ -14,7 +16,9 @@ public class Parallax : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //find main camera
         cam = GameObject.FindGameObjectsWithTag("MainCamera")[0];
+        //log start position
         startPos = new Vector2(transform.position.x, transform.position.y);
     }
 
