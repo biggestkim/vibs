@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerStart
   - LevelEnd
+  - HurtBox
   layers:
   - Default
   - TransparentFX
