@@ -175,8 +175,12 @@ MonoBehaviour:
   accelleration: 6.34
   dragFactor: 0.1
   jumpSpeed: 10
-  airControl: 0.3
+  airControl: 0.7
+  dashSpeed: 3
   isGrounded: 0
+  canDash: 0
+  footDust: {fileID: 2691175346127738582, guid: c0e337219b4576b428caf09cee2a8436, type: 3}
+  footDustDelay: 0.25
 --- !u!1 &1387846734696737045
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,7 +207,7 @@ Transform:
   m_GameObject: {fileID: 1387846734696737045}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2997528033263994143}

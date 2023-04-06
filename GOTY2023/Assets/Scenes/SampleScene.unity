@@ -2211,6 +2211,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7213100823664279403, guid: 8ec8473c6a2f9ac49a52b70d916d8db3, type: 3}
+      propertyPath: canDash
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7213100823664279403, guid: 8ec8473c6a2f9ac49a52b70d916d8db3, type: 3}
+      propertyPath: dashSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7213100823664279403, guid: 8ec8473c6a2f9ac49a52b70d916d8db3, type: 3}
+      propertyPath: airControl
+      value: 0.7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ec8473c6a2f9ac49a52b70d916d8db3, type: 3}
 --- !u!1001 &2970234620366757752

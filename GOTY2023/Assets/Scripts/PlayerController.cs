@@ -18,8 +18,20 @@ public class PlayerController : MonoBehaviour
 
     public bool isGrounded = false;
 
+    bool isDashing = false;
+    public bool canDash = true;
+    public float dashSpeed = 8f;
+    public float dashDuration = 0.2f;
+    public float dashCooldown = 0.5f;
+
+
     float inputH = 0f;
+    float inputV = 0f;
     bool jump = false;
+
+    public GameObject footDust;
+    public float footDustDelay = 0.25f;
+    float footDustTimer = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -58,23 +70,52 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {        
+        if (isDashing)
+        {
+            return;
+        }
+
         //check for grounded
         if(footObject.GetComponent<Collider2D>().GetContacts(new List<Collider2D>()) > 0)
             isGrounded = true;
         else
             isGrounded = false;
 
-
         //get input
         inputH = Input.GetAxis("Horizontal");
-        jump = Input.GetButton("Jump");
+        inputV = Input.GetAxis("Vertical");
+        jump = Input.GetButtonDown("Jump");
+
+        //dash trigger
+        if(!isGrounded && canDash && jump)
+        {
+            StartCoroutine(Dash());
+        }
+
+        //foot dust stuff
+        if (isGrounded)
+        {
+            footDustTimer += Time.deltaTime;
+            if (footDustTimer > footDustDelay && inputH != 0)
+            {
+                footDustTimer = 0;
+                Instantiate(footDust, footObject.transform.position, transform.rotation);
+            }
+        }
 
         //cap x speed
-        if (rb.velocity.x < -1 * maxSpeed)
-            rb.velocity = new Vector2(-1 * maxSpeed, rb.velocity.y);
-        else if (rb.velocity.x > maxSpeed)
-            rb.velocity = new Vector2(maxSpeed, rb.velocity.y);
+        if (!isDashing)
+        {
+            if (rb.velocity.magnitude > maxSpeed)
+                rb.velocity = rb.velocity.normalized * maxSpeed;
+            /*
+            if (rb.velocity.x < -1 * maxSpeed)
+                rb.velocity = new Vector2(-1 * maxSpeed, rb.velocity.y);
+            else if (rb.velocity.x > maxSpeed)
+                rb.velocity = new Vector2(maxSpeed, rb.velocity.y);*/
+        }
+
 
         //slow if no h input
         if(Mathf.Abs(inputH) < 0.1f)
@@ -96,11 +137,28 @@ public class PlayerController : MonoBehaviour
             sr.flipX = false;
 
         //jumping
-        if (jump && isGrounded)
+        if (jump)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+            //jump
+            if (isGrounded)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+            }                
         }
-    
 
+        IEnumerator Dash()
+        {
+            canDash = false;
+            isDashing = true;
+            float originalGravity = rb.gravityScale;
+            rb.gravityScale = 0f;
+            rb.velocity = new Vector2(inputH, inputV).normalized * dashSpeed;
+            yield return new WaitForSeconds(dashDuration);
+            rb.gravityScale = originalGravity;
+            isDashing = false;
+            yield return new WaitForSeconds(dashCooldown);
+            canDash = true;
+            
+        }
     }
 }

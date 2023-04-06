@@ -30,6 +30,8 @@ public class Flame : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x * -1, rb.velocity.y);
             jumpTimer = 0f; //reset timer
             jumpRight = !jumpRight; //switch direction
+
+            GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
         }
         else
         {
