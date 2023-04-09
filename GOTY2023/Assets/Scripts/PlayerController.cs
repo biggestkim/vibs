@@ -13,7 +13,12 @@ public class PlayerController : MonoBehaviour
     public float maxSpeed = 3f;
     public float accelleration = 8f;
     public float dragFactor = 0.2f;
-    public float jumpSpeed = 2f;
+    public float gravityAmount = 3f;
+
+    public float maxJumpDuration = 0.5f;
+    float jumpTimer = 0f;
+    public float jumpGravity = 0.5f;
+    public float jumpSpeed = 2f; //initial jump speed
     public float airControl = 0.3f;
 
     public bool isGrounded = false;
@@ -27,7 +32,8 @@ public class PlayerController : MonoBehaviour
 
     float inputH = 0f;
     float inputV = 0f;
-    bool jump = false;
+    bool jumping = false; //jump state, used to reduce gravity
+    bool jump = false; //jump trigger
 
     public GameObject footDust;
     public float footDustDelay = 0.25f;
@@ -53,6 +59,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
         gc = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<GameController>();
+
+        rb.gravityScale = gravityAmount;
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -71,6 +79,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {        
+        //ignore input while dashing
         if (isDashing)
         {
             return;
@@ -83,8 +92,8 @@ public class PlayerController : MonoBehaviour
             isGrounded = false;
 
         //get input
-        inputH = Input.GetAxis("Horizontal");
-        inputV = Input.GetAxis("Vertical");
+        inputH = Input.GetAxisRaw("Horizontal");
+        inputV = Input.GetAxisRaw("Vertical");
         jump = Input.GetButtonDown("Jump");
 
         //dash trigger
@@ -109,13 +118,7 @@ public class PlayerController : MonoBehaviour
         {
             if (rb.velocity.magnitude > maxSpeed)
                 rb.velocity = rb.velocity.normalized * maxSpeed;
-            /*
-            if (rb.velocity.x < -1 * maxSpeed)
-                rb.velocity = new Vector2(-1 * maxSpeed, rb.velocity.y);
-            else if (rb.velocity.x > maxSpeed)
-                rb.velocity = new Vector2(maxSpeed, rb.velocity.y);*/
         }
-
 
         //slow if no h input
         if(Mathf.Abs(inputH) < 0.1f)
@@ -136,25 +139,40 @@ public class PlayerController : MonoBehaviour
         else if(inputH > 0.1f)
             sr.flipX = false;
 
-        //jumping
-        if (jump)
+        //jump
+        if (jump && isGrounded)
         {
-            //jump
-            if (isGrounded)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
-            }                
+            rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+            jumping = true;
+            jumpTimer = 0;
         }
 
+        //reduce gravity while jumping
+        if (jumping)
+        {
+            rb.gravityScale = jumpGravity;
+
+            //limit length of jump
+            jumpTimer += Time.deltaTime;
+            
+            //when jump button released or max jump reached, reset gravity
+            if (Input.GetButtonUp("Jump") || jumpTimer >= maxJumpDuration)
+            {
+                Debug.Log("Jump released");
+                jumping = false;
+                rb.gravityScale = gravityAmount;
+            }
+        }
+
+        //sets speed and eliminates gravity while dashing
         IEnumerator Dash()
         {
             canDash = false;
             isDashing = true;
-            float originalGravity = rb.gravityScale;
             rb.gravityScale = 0f;
             rb.velocity = new Vector2(inputH, inputV).normalized * dashSpeed;
             yield return new WaitForSeconds(dashDuration);
-            rb.gravityScale = originalGravity;
+            rb.gravityScale = gravityAmount;
             isDashing = false;
             yield return new WaitForSeconds(dashCooldown);
             canDash = true;
