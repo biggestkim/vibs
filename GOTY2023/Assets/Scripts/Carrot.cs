@@ -10,6 +10,7 @@ public class Carrot : MonoBehaviour
     Rigidbody2D rb;
     public Collider2D punchCollider;
     public Collider2D hitBox;
+    public Collider2D hurtBox;
     public Animator anim;
     public GameObject player;
 
@@ -89,6 +90,8 @@ public class Carrot : MonoBehaviour
                 else
                 {
                     rb.velocity = Vector2.zero;
+                    rb.gravityScale = 0f;
+                    transform.position = new Vector2(transform.position.x, initialPos.y - 1.5f);
                     this.enabled = false;
                 }
                 break;
@@ -115,6 +118,7 @@ public class Carrot : MonoBehaviour
             rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
             rb.gravityScale = 2f;
             hitBox.enabled = false;
+            hurtBox.enabled = false;
             transform.GetComponent<Collider2D>().isTrigger = true;
             punchCollider.enabled = false;
             //rb.velocity = Vector2.zero;

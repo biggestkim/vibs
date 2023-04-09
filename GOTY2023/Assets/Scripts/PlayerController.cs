@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody2D rb;
     SpriteRenderer sr;
+    Animator anim;
     public GameObject footObject;
 
     public float maxSpeed = 3f;
@@ -58,6 +59,7 @@ public class PlayerController : MonoBehaviour
         //get references to some other components
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
+        anim = GetComponentInChildren<Animator>();
         gc = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<GameController>();
 
         rb.gravityScale = gravityAmount;
@@ -78,7 +80,7 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {        
+    {
         //ignore input while dashing
         if (isDashing)
         {
@@ -102,15 +104,23 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Dash());
         }
 
-        //foot dust stuff
         if (isGrounded)
         {
+            //animation stuff
+            anim.SetBool("Jump", false);
+            anim.SetFloat("Speed", rb.velocity.magnitude);
+
+            //foot dust
             footDustTimer += Time.deltaTime;
             if (footDustTimer > footDustDelay && inputH != 0)
             {
                 footDustTimer = 0;
                 Instantiate(footDust, footObject.transform.position, transform.rotation);
             }
+        }
+        else
+        {
+            anim.SetFloat("Speed", 0);
         }
 
         //cap x speed
@@ -150,6 +160,8 @@ public class PlayerController : MonoBehaviour
         //reduce gravity while jumping
         if (jumping)
         {
+            anim.SetBool("Jump", true);
+
             rb.gravityScale = jumpGravity;
 
             //limit length of jump
@@ -159,6 +171,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetButtonUp("Jump") || jumpTimer >= maxJumpDuration)
             {
                 Debug.Log("Jump released");
+                anim.SetBool("Jump", false);
                 jumping = false;
                 rb.gravityScale = gravityAmount;
             }
