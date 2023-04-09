@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0edd261da4c12e64dbfa516144c464f4
+guid: 5854a77edcfb75e4baef791f7f02b5c6
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 48
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
@@ -67,7 +67,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 512
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -105,13 +105,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sheep-animation_0
+      name: upjump-sheet_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 48
-        height: 48
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -119,20 +119,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 79ceb23a2c8cb4d41bf01e4d2c5fade2
-      internalID: 620209238
+      spriteID: 3b9108bb03124ee4c9e1c4c9647eee23
+      internalID: 1965954557
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheep-animation_1
+      name: upjump-sheet_1
       rect:
         serializedVersion: 2
-        x: 48
+        x: 32
         y: 0
-        width: 48
-        height: 48
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,20 +140,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9ad929f199e96854cbdf4bee9767b4d6
-      internalID: 1057096025
+      spriteID: 8d8be068765e9f5479fe9b4add53f375
+      internalID: -385178135
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheep-animation_2
+      name: upjump-sheet_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2f2cdd6f993ace409413e60c9e72991
+      internalID: -1237833495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: upjump-sheet_3
       rect:
         serializedVersion: 2
         x: 96
         y: 0
-        width: 48
-        height: 48
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -161,20 +182,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6f9ae077b1b3b3640a7584b5a65b1bfb
-      internalID: -1126098201
+      spriteID: be0cddf833ce890429e7b2c13ecefc2e
+      internalID: -246661947
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheep-animation_3
+      name: upjump-sheet_4
       rect:
         serializedVersion: 2
-        x: 144
+        x: 128
         y: 0
-        width: 48
-        height: 48
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -182,20 +203,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 73f8e75bfa4b30c41a919525fc8b7088
-      internalID: 426458878
+      spriteID: 285b4bb2a1edc7a408e6b1bb075d507e
+      internalID: 404435312
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sheep-animation_4
+      name: upjump-sheet_5
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70a67b127036d5b46b5cc15498393723
+      internalID: -750472101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: upjump-sheet_6
       rect:
         serializedVersion: 2
         x: 192
         y: 0
-        width: 48
-        height: 48
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,92 +245,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 948ffbcfeb478084c8f5bc04261c9de8
-      internalID: 644507333
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sheep-animation_5
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c254af1d5d1490546ae33fe22ff8f522
-      internalID: -657870811
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sheep-animation_6
-      rect:
-        serializedVersion: 2
-        x: 288
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 65aa2630cd504694fba3aa13c2d4513b
-      internalID: -1044294835
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sheep-animation_7
-      rect:
-        serializedVersion: 2
-        x: 336
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5b69b86964c1f3342ad2da938de52ad2
-      internalID: 875232461
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sheep-animation_8
-      rect:
-        serializedVersion: 2
-        x: 384
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1ac7fb3f1c1868f4587ddc67210bd686
-      internalID: -1464865225
+      spriteID: f2ee5c60b7081a34fa42a8a559d981fc
+      internalID: 1256859966
       vertices: []
       indices: 
       edges: []
@@ -304,15 +262,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      sheep-animation_0: 620209238
-      sheep-animation_1: 1057096025
-      sheep-animation_2: -1126098201
-      sheep-animation_3: 426458878
-      sheep-animation_4: 644507333
-      sheep-animation_5: -657870811
-      sheep-animation_6: -1044294835
-      sheep-animation_7: 875232461
-      sheep-animation_8: -1464865225
+      upjump-sheet_0: 1965954557
+      upjump-sheet_1: -385178135
+      upjump-sheet_2: -1237833495
+      upjump-sheet_3: -246661947
+      upjump-sheet_4: 404435312
+      upjump-sheet_5: -750472101
+      upjump-sheet_6: 1256859966
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
