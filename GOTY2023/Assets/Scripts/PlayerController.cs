@@ -11,12 +11,13 @@ public class PlayerController : MonoBehaviour
     Animator anim;
     public GameObject footObject;
 
-    public float maxSpeed = 3f;
+    public float maxXSpeed = 6f;
+    //public float maxYSpeed = 5f;
     public float accelleration = 8f;
     public float dragFactor = 0.2f;
     public float gravityAmount = 3f;
 
-    public float maxJumpDuration = 0.5f;
+    public float maxJumpDuration = 0.2f;
     float jumpTimer = 0f;
     public float jumpGravity = 0.5f;
     public float jumpSpeed = 2f; //initial jump speed
@@ -126,8 +127,10 @@ public class PlayerController : MonoBehaviour
         //cap x speed
         if (!isDashing)
         {
-            if (rb.velocity.magnitude > maxSpeed)
-                rb.velocity = rb.velocity.normalized * maxSpeed;
+            if (rb.velocity.x > maxXSpeed)
+                rb.velocity = new Vector2(maxXSpeed, rb.velocity.y);
+            else if (rb.velocity.x < -1 * maxXSpeed)
+                rb.velocity = new Vector2(-1 * maxXSpeed, rb.velocity.y);
         }
 
         //slow if no h input
@@ -137,7 +140,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //move
-        if (Mathf.Abs(rb.velocity.x + (inputH * accelleration * 0.01f)) < maxSpeed)
+        if (Mathf.Abs(rb.velocity.x + (inputH * accelleration * 0.01f)) < maxXSpeed)
             if (isGrounded)
                 rb.AddForce(new Vector2(inputH * accelleration, 0));
             else
