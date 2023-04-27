@@ -26,37 +26,19 @@ public class GameController : MonoBehaviour
 
         //find player
         player = GameObject.FindGameObjectsWithTag("Player")[0];
-
-        HomePlayer();
-    }
-
-    //reload current level and send player to start position
-    void HomePlayer()
-    {
-        GameObject playerStart = GameObject.FindGameObjectsWithTag("PlayerStart")[0];
-        player.transform.position = playerStart.transform.position;
-        player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
     //load and reset new level
     public void SetLevel(string newID)
     {
-        SceneManager.LoadScene(newID);
-        StartCoroutine(HomePlayerPause(.01f));       
+        SceneManager.LoadScene(newID);    
     }
 
     public void ResetLevel()
     {
         SetLevel(SceneManager.GetActiveScene().name);
-    }
-
-    IEnumerator HomePlayerPause(float t)
-    {
-
-        //Wait for 4 seconds
-        yield return new WaitForSeconds(t);
-
-        HomePlayer();
+        //find player
+        player = GameObject.FindGameObjectsWithTag("Player")[0];
     }
 
     // Update is called once per frame

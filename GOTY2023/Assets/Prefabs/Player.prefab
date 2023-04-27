@@ -171,7 +171,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   footObject: {fileID: 2938088922089122293}
-  maxSpeed: 6.6
+  maxXSpeed: 6
+  maxYSpeed: 10
   accelleration: 6.34
   dragFactor: 0.1
   gravityAmount: 3
@@ -180,6 +181,7 @@ MonoBehaviour:
   jumpSpeed: 10
   airControl: 0.7
   isGrounded: 0
+  onPlatform: 0
   canDash: 0
   dashSpeed: 3
   dashDuration: 0.2

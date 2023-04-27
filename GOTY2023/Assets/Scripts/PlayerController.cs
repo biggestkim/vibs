@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public GameObject footObject;
 
     public float maxXSpeed = 6f;
-    //public float maxYSpeed = 5f;
+    public float maxYSpeed = 10f;
     public float accelleration = 8f;
     public float dragFactor = 0.2f;
     public float gravityAmount = 3f;
@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     public float airControl = 0.3f;
 
     public bool isGrounded = false;
+    public bool onPlatform = false;
 
     bool isDashing = false;
     public bool canDash = true;
@@ -54,8 +55,6 @@ public class PlayerController : MonoBehaviour
                 return;
             }
         }
-        //keep this between scenes
-        DontDestroyOnLoad(gameObject);
 
         //get references to some other components
         rb = GetComponent<Rigidbody2D>();
@@ -70,6 +69,7 @@ public class PlayerController : MonoBehaviour
     {
         if(col.gameObject.tag == "HurtBox")
         {
+            Debug.Log("DeathFunction");
             Death();
         }
     }
@@ -79,9 +79,30 @@ public class PlayerController : MonoBehaviour
         gc.ResetLevel();
     }
 
+    //returns true and if touching a platform. Also sets parent to the platform.
+    //otherwise return false and null parent.
+    bool CheckPlatform()
+    {
+        Collider2D[] contacts = Physics2D.OverlapCircleAll(transform.position, .51f);
+
+        foreach(Collider2D c in contacts)
+        {
+            if(c.gameObject.tag == "Platform")
+            {               
+                transform.parent = c.gameObject.transform;
+                return true;
+            }
+        }
+        transform.parent = null;
+        return false;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        //check if touching platform
+        onPlatform = CheckPlatform();
+
         //ignore input while dashing
         if (isDashing)
         {
@@ -124,13 +145,18 @@ public class PlayerController : MonoBehaviour
             anim.SetFloat("Speed", 0);
         }
 
-        //cap x speed
+        //cap x and y speed
         if (!isDashing)
         {
             if (rb.velocity.x > maxXSpeed)
                 rb.velocity = new Vector2(maxXSpeed, rb.velocity.y);
             else if (rb.velocity.x < -1 * maxXSpeed)
                 rb.velocity = new Vector2(-1 * maxXSpeed, rb.velocity.y);
+
+            if (rb.velocity.y > maxYSpeed)
+                rb.velocity = new Vector2(rb.velocity.x, maxYSpeed);
+            else if (rb.velocity.y < -1 * maxYSpeed)
+                rb.velocity = new Vector2(rb.velocity.x, -1 * maxYSpeed);
         }
 
         //slow if no h input
