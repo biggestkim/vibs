@@ -5,18 +5,24 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     GameController gc;
+    CameraController cam;
 
+    //components
     Rigidbody2D rb;
     SpriteRenderer sr;
     Animator anim;
     public GameObject footObject;
+    public GameObject dashIndicator;
+    TrailRenderer dashTrail;
 
+    //movmeent
     public float maxXSpeed = 6f;
     public float maxYSpeed = 10f;
     public float accelleration = 8f;
     public float dragFactor = 0.2f;
     public float gravityAmount = 3f;
 
+    //jump
     public float maxJumpDuration = 0.2f;
     float jumpTimer = 0f;
     public float jumpGravity = 0.5f;
@@ -26,18 +32,21 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded = false;
     public bool onPlatform = false;
 
+    //dash
     bool isDashing = false;
     public bool canDash = true;
+    public float dashPause = 500f;
     public float dashSpeed = 8f;
-    public float dashDuration = 0.2f;
+    public float maxDashDuration = 0.2f;
     public float dashCooldown = 0.5f;
 
-
+    //input
     float inputH = 0f;
     float inputV = 0f;
     bool jumping = false; //jump state, used to reduce gravity
     bool jump = false; //jump trigger
 
+    //effects
     public GameObject footDust;
     public float footDustDelay = 0.25f;
     float footDustTimer = 0;
@@ -61,8 +70,13 @@ public class PlayerController : MonoBehaviour
         sr = GetComponentInChildren<SpriteRenderer>();
         anim = GetComponentInChildren<Animator>();
         gc = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<GameController>();
+        cam = GetComponentInChildren<CameraController>();
+        dashTrail = GetComponent<TrailRenderer>();
+        dashTrail.enabled = false;
 
         rb.gravityScale = gravityAmount;
+
+        dashIndicator.GetComponent<SpriteRenderer>().enabled = false;
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -77,6 +91,14 @@ public class PlayerController : MonoBehaviour
     void Death()
     {
         gc.ResetLevel();
+    }
+
+    void GetInput()
+    {
+        //get input
+        inputH = Input.GetAxisRaw("Horizontal");
+        inputV = Input.GetAxisRaw("Vertical");
+        jump = Input.GetButtonDown("Jump");
     }
 
     //returns true and if touching a platform. Also sets parent to the platform.
@@ -116,9 +138,7 @@ public class PlayerController : MonoBehaviour
             isGrounded = false;
 
         //get input
-        inputH = Input.GetAxisRaw("Horizontal");
-        inputV = Input.GetAxisRaw("Vertical");
-        jump = Input.GetButtonDown("Jump");
+        GetInput();
 
         //dash trigger
         if(!isGrounded && canDash && jump)
@@ -199,26 +219,49 @@ public class PlayerController : MonoBehaviour
             //when jump button released or max jump reached, reset gravity
             if (Input.GetButtonUp("Jump") || jumpTimer >= maxJumpDuration)
             {
-                Debug.Log("Jump released");
                 anim.SetBool("Jump", false);
                 jumping = false;
                 rb.gravityScale = gravityAmount;
             }
         }
 
-        //sets speed and eliminates gravity while dashing
-        IEnumerator Dash()
+        
+    }
+
+    //wait for dash released then dash in chosen direction
+    IEnumerator Dash()
+    {
+        //setup stuff
+        canDash = false;
+        isDashing = true;
+        rb.gravityScale = 0f;
+        float dashChoiceTimer = 0f;
+        dashIndicator.GetComponent<SpriteRenderer>().enabled = true;
+        dashIndicator.transform.localScale = Vector3.one * 5;
+
+        //wait for jump to be released or timer to run out
+        while (Input.GetButton("Jump") && dashChoiceTimer < dashPause)
         {
-            canDash = false;
-            isDashing = true;
-            rb.gravityScale = 0f;
-            rb.velocity = new Vector2(inputH, inputV).normalized * dashSpeed;
-            yield return new WaitForSeconds(dashDuration);
-            rb.gravityScale = gravityAmount;
-            isDashing = false;
-            yield return new WaitForSeconds(dashCooldown);
-            canDash = true;
-            
+            rb.velocity = Vector2.zero;
+            dashChoiceTimer += Time.deltaTime;
+            dashIndicator.transform.localScale = Vector3.one * 5f * ((dashPause * 1.5f) - dashChoiceTimer) / (dashPause * 1.5f);
+            yield return null;
         }
+
+        //dash in chosen direction
+        dashIndicator.GetComponent<SpriteRenderer>().enabled = false;
+        GetInput();
+        float dashDuration = maxDashDuration * ((dashPause - dashChoiceTimer) / (dashPause * 1.5f));
+        rb.velocity = new Vector2(inputH, inputV).normalized * dashSpeed;
+        dashTrail.enabled = true;
+        cam.Shake(dashDuration, .1f);
+        yield return new WaitForSeconds(dashDuration);
+        dashTrail.enabled = false;
+        //finish dashing
+        rb.gravityScale = gravityAmount;
+        isDashing = false;
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+
     }
 }
